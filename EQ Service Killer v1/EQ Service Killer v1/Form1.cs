@@ -13,70 +13,75 @@ namespace EQ_Service_Killer_v1
 {
     public partial class Form1 : Form
     {
-
         public Form1()
         {
             InitializeComponent();
         }
-
         public void spooler_Status_Click(object sender, EventArgs e)
         {
-            ServiceController[] scServices;
-            scServices = ServiceController.GetServices();
-
-            foreach (ServiceController service in scServices)
-            {
-                if (service.ServiceName == "Spooler")
-                {
-                    for (int i = 0; i < 5; i++)
-                    {
-                        ServiceController sc = new ServiceController("Spooler");
-                        textBox1.Text = sc.Status.ToString();
-                    }
-                }
-            }
+            textBox1.Text = EQServices.GetStatus(0);
+            textBox2.Text = EQServices.GetStatus(1);
+            textBox3.Text = EQServices.GetStatus(2);
+            textBox4.Text = EQServices.GetStatus(3);
+            textBox5.Text = EQServices.GetStatus(4);
+            textBox6.Text = EQServices.GetStatus(5);
         }
-
         private void startServiceButton_Click(object sender, EventArgs e)
         {
-            ServiceStartStop("start");
+            EQServices.StartCheckedServices();
         }
-
         private void stopServiceButton_Click(object sender, EventArgs e)
         {
-            ServiceStartStop("stop");
+            EQServices.StopCheckedServices();
         }
-
-        public void ServiceStartStop(string startOrStop)
+        private void Form1_Load(object sender, EventArgs e)
         {
-            ServiceController[] scServices;
-            scServices = ServiceController.GetServices();
 
-            if (startOrStop == "stop")
-            {
-                foreach (ServiceController service in scServices)
-                {
-                    if (service.ServiceName == "Spooler")
-                    {
-                        ServiceController sc = new ServiceController("Spooler");
-                        sc.Stop();
-                        textBox1.Text = sc.Status.ToString();
-                    }
-                }
-            }
-            else if (startOrStop == "start")
-            {
-                foreach (ServiceController service in scServices)
-                {
-                    if (service.ServiceName == "Spooler")
-                    {
-                        ServiceController sc = new ServiceController("Spooler");
-                        sc.Start();
-                        textBox1.Text = sc.Status.ToString();
-                    }
-                }
-            }
         }
+        #region Check Boxes
+        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        {
+            spoolerCheckBox.Checked = true;
+            htcCheckBox.Checked = true;
+            originCheckBox.Checked = true;
+            pingCheckBox.Checked = true;
+            razerCheckBox.Checked = true;
+            ssuCheckBox.Checked = true;
+        }
+        private void checkBox2_CheckedChanged(object sender, EventArgs e)
+        {
+            spoolerCheckBox.Checked = false;
+            htcCheckBox.Checked = false;
+            originCheckBox.Checked = false;
+            pingCheckBox.Checked = false;
+            razerCheckBox.Checked = false;
+            ssuCheckBox.Checked = false;
+        }
+        private void spoolerCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            EQServices.Checked(0);
+        }
+        private void htcCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            EQServices.Checked(1);
+        }
+        private void originCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            EQServices.Checked(2);
+        }
+        private void pingCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            EQServices.Checked(3);
+        }
+        private void razerCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            EQServices.Checked(4);
+        }
+        private void ssuCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            EQServices.Checked(5);
+        }
+        #endregion
 
         
     }
